@@ -1,0 +1,32 @@
+# .gitpod.yml
+
+image:
+  file: .gitpod/Dockerfile
+
+tasks:
+  - name: Setup PostgreSQL
+    init: .gitpod/postgres-setup.sh
+  - name: Install Backend Dependencies
+    command: |
+      cd backend
+      bundle install
+      rails db:create db:migrate
+  - name: Install Frontend Dependencies
+    command: |
+      cd frontend
+      npm install
+
+ports:
+  - port: 3000
+    onOpen: open-preview
+    description: Rails API (backend)
+  - port: 5173
+    onOpen: open-preview
+    description: React Frontend (Vite default)
+
+vscode:
+  extensions:
+    - rebornix.Ruby
+    - esbenp.prettier-vscode
+    - dbaeumer.vscode-eslint
+    - ms-azuretools.vscode-docker
